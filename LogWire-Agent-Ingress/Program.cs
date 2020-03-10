@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using LogWire.Controller.Client.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
-namespace LogWire_Agent_Ingress
+namespace LogWire.Agent.Ingress
 {
     public class Program
     {
@@ -20,7 +17,21 @@ namespace LogWire_Agent_Ingress
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+
+                    string endpoint = Environment.GetEnvironmentVariable("lw_controller_endpoint");
+                    string token = Environment.GetEnvironmentVariable("lw_access_token");
+
+                    webBuilder.ConfigureAppConfiguration(builder =>
+                    {
+                        builder.AddEnvironmentVariables("lw_");
+                        builder.AddControllerConfiguration(endpoint, "ingress.agent", token);
+                        builder.AddControllerConfiguration(endpoint, "rabbitmq", token);
+                    });
+
+                    webBuilder.UseUrls("https://0.0.0.0:5004");
+
                     webBuilder.UseStartup<Startup>();
+
                 });
     }
 }
