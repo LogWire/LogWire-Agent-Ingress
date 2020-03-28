@@ -10,10 +10,10 @@ namespace LogWire.Agent.Ingress.Controllers.Workstation
 
         [HttpPost]
         [Route("/workstation/user/event/authentication")]
-        public IActionResult LogUserEvent([FromBody] UserAuthenticationRequestModel body)
+        public IActionResult LogUserEvent([FromBody] UserEventModel body)
         {
 
-            if (body != null)
+            if (body != null && body.IsValid)
             {
                 RabbitManager.Instance.AddUserAuthenticationEvent(body);
 

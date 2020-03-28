@@ -60,7 +60,7 @@ namespace LogWire.Agent.Ingress.RabbitMQ
             _password = configuration["rabbitmq.guest.pass"];
         }
 
-        public void AddUserAuthenticationEvent(UserAuthenticationRequestModel body)
+        public void AddUserAuthenticationEvent(UserEventModel body)
         {
 
             using (var conn = GetConnection())
